@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+  <property name="CONSOLE_LOG_PATTERN"
+    value="%date{yyyy-MM-dd HH:mm:ss.SSS} | %highlight(%-5level) [%boldYellow(%22thread)] %boldGreen(%-88logger) | %45file - %5line | %msg%n"/>
+
+  <!-- 日志保存路径为tomcat下面的logs下面的user_center文件夹，logback会自动创建文件夹，这样设置了就可以输出日志文件了 -->
+  <substitutionProperty name="logbase" value="${catalina.base}/logs/"/>
+  <!--每个appender都是一个日志策略 -->
+  <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+    </layout>
+    <encoder charset="UTF-8">
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <!--&lt;!&ndash; 演示按时间滚动的策略 &ndash;&gt;-->
+  <!--<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+  <!--<File>${logbase}/usercenter.log</File>-->
+  <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+  <!--&lt;!&ndash; daily rollover &ndash;&gt;-->
+  <!--<FileNamePattern>${logbase}/usercenter.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+  <!--&lt;!&ndash; 保留 30天数据，默认无限&ndash;&gt;-->
+  <!--<maxHistory>30</maxHistory>-->
+  <!--</rollingPolicy>-->
+  <!--<encoder>-->
+  <!--<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>-->
+  <!--</encoder>-->
+  <!--</appender>-->
+  <!--&lt;!&ndash; 系统日志 &ndash;&gt;-->
+  <!--<appender name="dailyRollingFileAppenderSys" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+  <!--<File>${logbase}/sysusercenter.log</File>-->
+  <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+  <!--&lt;!&ndash; daily rollover &ndash;&gt;-->
+  <!--<FileNamePattern>${logbase}/sysusercenter.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+  <!--&lt;!&ndash; 保留 30天数据，默认无限&ndash;&gt;-->
+  <!--<maxHistory>30</maxHistory>-->
+  <!--</rollingPolicy>-->
+  <!--<encoder>-->
+  <!--<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>-->
+  <!--</encoder>-->
+  <!--</appender>-->
+  <!--<appender name="minuteRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+  <!--<file>${logbase}/metrics.log</file>-->
+  <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+  <!--&lt;!&ndash; rollover every minute &ndash;&gt;-->
+  <!--<FileNamePattern>${logbase}/minute.%d{yyyy-MM-dd_HH-mm}.log</FileNamePattern>-->
+  <!--&lt;!&ndash; 最多保留10个文件，默认是7 &ndash;&gt;-->
+  <!--<maxIndex>10</maxIndex>-->
+  <!--&lt;!&ndash; keep 30 minutes' worth of history &ndash;&gt;-->
+  <!--<maxHistory>30</maxHistory>-->
+  <!--</rollingPolicy>-->
+  <!--<encoder>-->
+  <!--<Pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</Pattern>-->
+  <!--</encoder>-->
+  <!--</appender>-->
+
+  <!--&lt;!&ndash; 综合时间与大小的滚动策略，先按小时滚动，小时内的文件大于10mb时再按大小滚动 &ndash;&gt;-->
+  <!--<appender name="businessLogFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+  <!--<file>${logbase}/business.log</file>-->
+  <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+  <!--<fileNamePattern>${logbase}/business-%d{yyyy-MM-dd_HH}.%i.zip</fileNamePattern>-->
+  <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+  <!--<maxFileSize>200MB</maxFileSize>-->
+  <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+  <!--</rollingPolicy>-->
+  <!--<encoder>-->
+  <!--<Pattern>%d{HH:mm:ss.SSS},%msg%n</Pattern>-->
+  <!--</encoder>-->
+  <!--</appender>-->
+  <!--此处使用appender  additivity是否继承父类的日志级别-->
+  <!--<logger name="com.kaiyuan.platform" level="DEBUG" additivity="false">-->
+  <!--<appender-ref ref="dailyRollingFileAppender"/><appender-ref ref="consoleAppender" />-->
+  <!--</logger>-->
+  <!-- SQL and bind values -->
+
+
+  <!-- SQL and bind values -->
+  <logger name="io.ebean.SQL" level="TRACE">
+  </logger>
+
+  <!-- Transaction Commit and Rollback events -->
+  <logger name="io.ebean.TXN" level="TRACE"/>
+  <!--根日志级别-->
+  <root>
+    <level value="INFO"/>
+    <appender-ref ref="consoleAppender"/>
+  </root>
+</configuration>
