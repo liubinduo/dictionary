@@ -2,7 +2,9 @@ package com.v1ok.dictionary;
 
 import com.v1ok.dictionary.db.service.IDistrictsService;
 import io.ebean.config.CurrentUserProvider;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient.Builder;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,12 +29,15 @@ public class ApplicationConfiguration {
 
   @Bean
   public RestTemplate restTemplate() {
-    RestTemplate template = new RestTemplate(getFactory());
-    return template;
+    return new RestTemplate(getFactory());
   }
 
   private OkHttp3ClientHttpRequestFactory getFactory() {
-    return new OkHttp3ClientHttpRequestFactory();
+
+    Builder builder = new Builder().callTimeout(5, TimeUnit.MINUTES);
+
+    return new OkHttp3ClientHttpRequestFactory(
+        builder.build());
   }
 
 

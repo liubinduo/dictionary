@@ -13,7 +13,7 @@
     <dependency>
       <groupId>com.v1ok</groupId>
       <artifactId>spring-boot-commons</artifactId>
-      <version>0.1.4.2</version>
+      <version>0.1.4.3</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
@@ -45,12 +45,6 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.2.5</version>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.14</version>
     </dependency>
 
     <dependency>
