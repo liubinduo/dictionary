@@ -9,8 +9,6 @@ import java.util.Set;
 
 public interface IDistrictsService extends IService<DistrictsEntity, String> {
 
-  void initData() throws IOException;
-
   List<DistrictsEntity> findBy(String parentId);
 
   Map<Character, List<DistrictsEntity>> letterIndex(String parentId);

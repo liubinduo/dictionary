@@ -34,7 +34,6 @@ public class DistrictsService extends AbstractService<DistrictsEntity, String> i
 
 
   final RestTemplate client;
-  final String AMAP_URL = "https://restapi.amap.com/v3/config/district?keywords=中国&subdistrict=4&key=86ab61aaa308175a4a282d6ae39a38b9";
 
   @Autowired
   public DistrictsService(RestTemplate client) {
@@ -95,71 +94,6 @@ public class DistrictsService extends AbstractService<DistrictsEntity, String> i
     String s = Arrays.stream(x).findFirst().orElse(null);
     assert s != null;
     return StringUtils.upperCase(s).charAt(0);
-  }
-
-
-  public void initData() {
-
-    int count = this.dao.getQuery().findCount();
-
-    if (count > 0) {
-      return;
-    }
-
-    log.info("初始化【Districts】表数据");
-
-    AMAPData data = this.client.getForObject(AMAP_URL, AMAPData.class);
-
-    if (data != null && "1".equals(data.getStatus())) {
-      this.save(data.getDistricts(), (String) null);
-    }
-
-    log.info("初始化【Districts】成功");
-  }
-
-  private void save(Districts[] districts, String parentId) {
-
-    if (ArrayUtils.isEmpty(districts)) {
-      return;
-    }
-
-    SimpleTypeConverter converter = new SimpleTypeConverter();
-
-    for (Districts d : districts) {
-
-      Object citycode = d.getCitycode();
-      String adcode = d.getAdcode();
-      String name = d.getName();
-      String center = d.getCenter();
-      String level = d.getLevel();
-
-      DistrictsEntityBuilder districtsEntityBuilder = DistrictsEntity.builder();
-      if (citycode instanceof String) {
-        districtsEntityBuilder.cityCode((String) citycode);
-      }
-      String[] split = StringUtils.split(center, ',');
-
-      String pid = DigestUtils.md5Hex(adcode + name);
-      Double longitude = converter.convertIfNecessary(split[0], Double.class);
-      Double latitude = converter.convertIfNecessary(split[1], Double.class);
-
-      DistrictsEntity entity = districtsEntityBuilder.adCode(adcode)
-          .name(name)
-          .level(level)
-          .longitude(longitude)
-          .latitude(latitude)
-          .pid(pid)
-          .parentId(parentId).build();
-
-      this.save(entity);
-
-      Districts[] subDis = d.getDistricts();
-      if (ArrayUtils.isNotEmpty(subDis)) {
-        this.save(subDis, pid);
-      }
-
-    }
-
   }
 
 }
